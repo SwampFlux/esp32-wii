@@ -3,6 +3,7 @@
 #include <freertos/queue.h>
 #include <esp32-hal-log.h>
 #include <esp32-hal-bt.h>
+#include <esp_spp_api.h>
 
 #if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
 #error Bluetooth is not enabled! Please run `make menuconfig` to and enable it
@@ -442,7 +443,15 @@ static void process_remote_name_request_complete_event(uint8_t len, uint8_t *dat
     uint16_t len = make_cmd_create_connection(tmp_data, scanned_device.bd_addr, pt, scanned_device.psrm, scanned_device.clkofs, ars);
     _queue_data(_tx_queue, tmp_data, len); // TODO: check return
     log_d("queued create_connection.");
+
+    // After the create_connection, send the authentication request
+    esp_spp_write(X, AUTHENTICATION_REQUEST_DATA, AUTHENTICATION_REQUEST_DATA_LENGTH); // Replace AUTHENTICATION_REQUEST_DATA with actual authentication request data
   }
+}
+
+static void authentication_handler(uint8_t len, uint8_t *data)
+{
+  printf("authentication_handler\n");
 }
 
 static void _l2cap_connect(uint16_t connection_handle, uint16_t psm, uint16_t source_cid)
