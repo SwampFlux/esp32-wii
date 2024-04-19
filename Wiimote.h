@@ -30,7 +30,7 @@ public:
   void init(wiimote_callback_t cb);
   void handle();
   void scan(bool enable);
-  void reconnect(string bluetooth_id);
+  void reconnect(std::string bluetooth_id);
   void _callback(wiimote_event_type_t event_type, uint16_t handle, uint8_t *data, size_t len);
   void set_led(uint16_t handle, uint8_t leds);
   void set_rumble(uint16_t handle, bool rumble);
