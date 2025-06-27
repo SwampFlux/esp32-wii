@@ -164,7 +164,11 @@ struct l2cap_connection_t {
   bool initiator;
 };
 static int l2cap_connection_size = 0;
+
+#ifndef L2CAP_CONNECTION_LIST_SIZE
 #define L2CAP_CONNECTION_LIST_SIZE 8
+#endif
+
 static l2cap_connection_t l2cap_connection_list[L2CAP_CONNECTION_LIST_SIZE];
 static int l2cap_connection_find_by_psm(uint16_t connection_handle, uint16_t psm){
   for(int i=0; i<l2cap_connection_size; i++){
